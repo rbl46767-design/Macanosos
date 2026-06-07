@@ -21,10 +21,11 @@ class ActivityView(discord.ui.View):
     async def update_message(self, interaction):
         activity = activities[self.activity_id]
 
-        embed = discord.Embed(
-          title=f"📌 [{activity_id}] {nombre}",
-            color=discord.Color.gold()
-        )
+      embed = discord.Embed(
+    title=f"📌 [{self.activity_id}] {activity['name']}",
+    description=f"🆔 ID de Actividad: {self.activity_id}",
+    color=discord.Color.gold()
+)
 
         for role_name, data in activity["roles"].items():
             users = "\n".join(
@@ -337,6 +338,26 @@ async def actividad_repartir(
         f"👥 Participantes: {len(participantes)}\n"
         f"💵 Cada uno recibe: {reparto:,.2f}"
     )
+@bot.tree.command(name="actividad_lista")
+async def actividad_lista(interaction: discord.Interaction):
 
+    if not activities:
+        await interaction.response.send_message(
+            "❌ No hay actividades activas."
+        )
+        return
+
+    mensaje = "📋 ACTIVIDADES ACTIVAS\n\n"
+
+    for activity_id, activity in activities.items():
+        estado = "🔒 Cerrada" if activity.get("cerrada", False) else "🟢 Abierta"
+
+        mensaje += (
+            f"🆔 {activity_id} | "
+            f"{activity['name']} | "
+            f"{estado}\n"
+        )
+
+    await interaction.response.send_message(mensaje)
 print("TOKEN cargado:", TOKEN is not None)
 bot.run(TOKEN)
