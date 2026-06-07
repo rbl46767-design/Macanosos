@@ -227,7 +227,12 @@ async def actividad_quitar(
         return
 
     activity = activities[actividad_id]
-
+if activity.get("cerrada", False):
+    await inter.response.send_message(
+        "❌ Esta actividad está cerrada.",
+        ephemeral=True
+    )
+    return
     if activity["creator"] != interaction.user.id:
         await interaction.response.send_message(
             "Solo el creador puede quitar personas.",
@@ -242,6 +247,105 @@ async def actividad_quitar(
     await interaction.response.send_message(
         f"{usuario.mention} removido."
     )
+@bot.tree.command(name="actividad_cerrar")
+@app_commands.describe(
+    actividad_id="ID de la actividad"
+)
+async def actividad_cerrar(
+    interaction: discord.Interaction,
+    actividad_id: int
+):
+    if actividad_id not in activities:
+        await interaction.response.send_message(
+            "Actividad no encontrada.",
+            ephemeral=True
+        )
+        return
 
+    activity = activities[actividad_id]
+
+    if activity["creator"] != interaction.user.id:
+        await interaction.response.send_message(
+            "Solo el creador puede cerrar la actividad.",
+            ephemeral=True
+        )
+        return
+
+    activity["cerrada"] = True
+
+    await interaction.response.send_message(
+        f"✅ Actividad {actividad_id} cerrada."
+    )
+
+
+@bot.tree.command(name="actividad_eliminar")
+@app_commands.describe(
+    actividad_id="ID de la actividad"
+)
+async def actividad_eliminar(
+    interaction: discord.Interaction,
+    actividad_id: int
+):
+    if actividad_id not in activities:
+        await interaction.response.send_message(
+            "Actividad no encontrada.",
+            ephemeral=True
+        )
+        return
+
+    activity = activities[actividad_id]
+
+    if activity["creator"] != interaction.user.id:
+        await interaction.response.send_message(
+            "Solo el creador puede eliminar la actividad.",
+            ephemeral=True
+        )
+        return
+
+    del activities[actividad_id]
+
+    await interaction.response.send_message(
+        "🗑️ Actividad eliminada."
+    )
+
+
+@bot.tree.command(name="actividad_repartir")
+@app_commands.describe(
+    actividad_id="ID de la actividad",
+    monto="Cantidad de plata a repartir"
+)
+async def actividad_repartir(
+    interaction: discord.Interaction,
+    actividad_id: int,
+    monto: int
+):
+    if actividad_id not in activities:
+        await interaction.response.send_message(
+            "Actividad no encontrada.",
+            ephemeral=True
+        )
+        return
+
+    activity = activities[actividad_id]
+
+    participantes = set()
+
+    for role_data in activity["roles"].values():
+        participantes.update(role_data["users"])
+
+    if len(participantes) == 0:
+        await interaction.response.send_message(
+            "No hay participantes.",
+            ephemeral=True
+        )
+        return
+
+    reparto = monto / len(participantes)
+
+    await interaction.response.send_message(
+        f"💰 Reparto total: {monto:,}\n"
+        f"👥 Participantes: {len(participantes)}\n"
+        f"💵 Cada uno recibe: {reparto:,.2f}"
+    )
 
 bot.run(TOKEN)
