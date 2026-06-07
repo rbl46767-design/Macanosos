@@ -4,7 +4,8 @@ from discord.ext import commands
 from discord import app_commands
 
 TOKEN = os.getenv("TOKEN")
-
+print("TOKEN =", TOKEN)
+print("Variables disponibles:", list(os.environ.keys()))
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
