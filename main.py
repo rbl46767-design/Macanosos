@@ -113,23 +113,23 @@ async def actividad_crear(
         )
 
         async def role_callback(
-            inter,
-            role_name=role_name,
-            activity_id=activity_id
-        ):
-            activity = activities[activity_id]
-            
-            if activity.get("cerrada", False):
-                await inter.response.send_message(
-        "❌ Esta actividad está cerrada.",
-        ephemeral=True
-    )
-    return
+    inter,
+    role_name=role_name,
+    activity_id=activity_id
+):
+    activity = activities[activity_id]
 
-            # quitar usuario de cualquier otro rol
-            for role_data in activity["roles"].values():
-                if inter.user.id in role_data["users"]:
-                    role_data["users"].remove(inter.user.id)
+    if activity.get("cerrada", False):
+        await inter.response.send_message(
+            "❌ Esta actividad está cerrada.",
+            ephemeral=True
+        )
+        return
+
+    # quitar usuario de cualquier otro rol
+    for role_data in activity["roles"].values():
+        if inter.user.id in role_data["users"]:
+            role_data["users"].remove(inter.user.id)
 
             role_data = activity["roles"][role_name]
 
