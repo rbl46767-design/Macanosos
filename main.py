@@ -1,8 +1,7 @@
+import os
 import discord
 from discord.ext import commands
 from discord import app_commands
-
-import os
 
 TOKEN = os.getenv("TOKEN")
 
@@ -79,7 +78,6 @@ async def actividad_crear(
     nombre: str,
     roles: str
 ):
-
     activity_id = len(activities) + 1
 
     parsed_roles = {}
@@ -95,7 +93,8 @@ async def actividad_crear(
     activities[activity_id] = {
         "name": nombre,
         "creator": interaction.user.id,
-        "roles": parsed_roles
+        "roles": parsed_roles,
+        "cerrada": False
     }
 
     embed = discord.Embed(
@@ -111,42 +110,42 @@ async def actividad_crear(
             value="Vacío",
             inline=False
         )
+
         async def role_callback(
-    inter,
-    role_name=role_name,
-    activity_id=activity_id
-):
-    activity = activities[activity_id]
+            inter,
+            role_name=role_name,
+            activity_id=activity_id
+        ):
+            activity = activities[activity_id]
 
-    if activity.get("cerrada", False):
-        await inter.response.send_message(
-            "❌ Esta actividad está cerrada.",
-            ephemeral=True
-        )
-        return
+            if activity.get("cerrada", False):
+                await inter.response.send_message(
+                    "❌ Esta actividad está cerrada.",
+                    ephemeral=True
+                )
+                return
 
-    # quitar usuario de cualquier otro rol
-    for role_data in activity["roles"].values():
-        if inter.user.id in role_data["users"]:
-            role_data["users"].remove(inter.user.id)
+            for role_data in activity["roles"].values():
+                if inter.user.id in role_data["users"]:
+                    role_data["users"].remove(inter.user.id)
 
-    role_data = activity["roles"][role_name]
+            role_data = activity["roles"][role_name]
 
-    if len(role_data["users"]) >= role_data["limit"]:
-        await inter.response.send_message(
-            "Ese rol está lleno.",
-            ephemeral=True
-        )
-        return
+            if len(role_data["users"]) >= role_data["limit"]:
+                await inter.response.send_message(
+                    "Ese rol está lleno.",
+                    ephemeral=True
+                )
+                return
 
-    role_data["users"].append(inter.user.id)
+            role_data["users"].append(inter.user.id)
 
-    await view.update_message(inter)
+            await view.update_message(inter)
 
-    await inter.response.send_message(
-        f"Te uniste como {role_name}.",
-        ephemeral=True
-    )
+            await inter.response.send_message(
+                f"Te uniste como {role_name}.",
+                ephemeral=True
+            )
 
         btn = discord.ui.Button(
             label=role_name,
@@ -174,7 +173,6 @@ async def actividad_agregar(
     usuario: discord.Member,
     rol: str
 ):
-
     if actividad_id not in activities:
         await interaction.response.send_message(
             "Actividad no encontrada.",
@@ -224,7 +222,6 @@ async def actividad_quitar(
     actividad_id: int,
     usuario: discord.Member
 ):
-
     if actividad_id not in activities:
         await interaction.response.send_message(
             "Actividad no encontrada.",
@@ -232,8 +229,8 @@ async def actividad_quitar(
         )
         return
 
-  
-    return
+    activity = activities[actividad_id]
+
     if activity["creator"] != interaction.user.id:
         await interaction.response.send_message(
             "Solo el creador puede quitar personas.",
@@ -248,10 +245,9 @@ async def actividad_quitar(
     await interaction.response.send_message(
         f"{usuario.mention} removido."
     )
+
+
 @bot.tree.command(name="actividad_cerrar")
-@app_commands.describe(
-    actividad_id="ID de la actividad"
-)
 async def actividad_cerrar(
     interaction: discord.Interaction,
     actividad_id: int
@@ -280,9 +276,6 @@ async def actividad_cerrar(
 
 
 @bot.tree.command(name="actividad_eliminar")
-@app_commands.describe(
-    actividad_id="ID de la actividad"
-)
 async def actividad_eliminar(
     interaction: discord.Interaction,
     actividad_id: int
@@ -311,10 +304,6 @@ async def actividad_eliminar(
 
 
 @bot.tree.command(name="actividad_repartir")
-@app_commands.describe(
-    actividad_id="ID de la actividad",
-    monto="Cantidad de plata a repartir"
-)
 async def actividad_repartir(
     interaction: discord.Interaction,
     actividad_id: int,
@@ -348,5 +337,6 @@ async def actividad_repartir(
         f"👥 Participantes: {len(participantes)}\n"
         f"💵 Cada uno recibe: {reparto:,.2f}"
     )
+
 
 bot.run(TOKEN)
