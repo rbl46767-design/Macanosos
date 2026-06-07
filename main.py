@@ -18,14 +18,14 @@ class ActivityView(discord.ui.View):
         super().__init__(timeout=None)
         self.activity_id = activity_id
 
-    async def update_message(self, interaction):
+      async def update_message(self, interaction):
         activity = activities[self.activity_id]
 
-      embed = discord.Embed(
-    title=f"📌 [{self.activity_id}] {activity['name']}",
-    description=f"🆔 ID de Actividad: {self.activity_id}",
-    color=discord.Color.gold()
-)
+        embed = discord.Embed(
+            title=f"📌 [{self.activity_id}] {activity['name']}",
+            description=f"🆔 ID de Actividad: {self.activity_id}",
+            color=discord.Color.gold()
+        )
 
         for role_name, data in activity["roles"].items():
             users = "\n".join(
