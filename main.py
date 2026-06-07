@@ -18,7 +18,7 @@ class ActivityView(discord.ui.View):
         super().__init__(timeout=None)
         self.activity_id = activity_id
 
-      async def update_message(self, interaction):
+    async def update_message(self, interaction):
         activity = activities[self.activity_id]
 
         embed = discord.Embed(
