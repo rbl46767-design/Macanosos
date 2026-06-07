@@ -22,7 +22,7 @@ class ActivityView(discord.ui.View):
         activity = activities[self.activity_id]
 
         embed = discord.Embed(
-            title=f"📌 {activity['name']}",
+          title=f"📌 [{activity_id}] {nombre}",
             color=discord.Color.gold()
         )
 
