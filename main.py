@@ -147,7 +147,6 @@ async def actividad_crear(
         f"Te uniste como {role_name}.",
         ephemeral=True
     )
-            )
 
         btn = discord.ui.Button(
             label=role_name,
