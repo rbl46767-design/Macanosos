@@ -117,13 +117,14 @@ async def actividad_crear(
             role_name=role_name,
             activity_id=activity_id
         ):
+            activity = activities[activity_id]
+            
             if activity.get("cerrada", False):
-    await inter.response.send_message(
+                await inter.response.send_message(
         "❌ Esta actividad está cerrada.",
         ephemeral=True
     )
     return
-            activity = activities[activity_id]
 
             # quitar usuario de cualquier otro rol
             for role_data in activity["roles"].values():
