@@ -117,6 +117,12 @@ async def actividad_crear(
             role_name=role_name,
             activity_id=activity_id
         ):
+            if activity.get("cerrada", False):
+    await inter.response.send_message(
+        "❌ Esta actividad está cerrada.",
+        ephemeral=True
+    )
+    return
             activity = activities[activity_id]
 
             # quitar usuario de cualquier otro rol
@@ -226,12 +232,7 @@ async def actividad_quitar(
         )
         return
 
-    activity = activities[actividad_id]
-if activity.get("cerrada", False):
-    await inter.response.send_message(
-        "❌ Esta actividad está cerrada.",
-        ephemeral=True
-    )
+  
     return
     if activity["creator"] != interaction.user.id:
         await interaction.response.send_message(
