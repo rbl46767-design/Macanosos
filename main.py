@@ -338,5 +338,5 @@ async def actividad_repartir(
         f"💵 Cada uno recibe: {reparto:,.2f}"
     )
 
-
+print("TOKEN cargado:", TOKEN is not None)
 bot.run(TOKEN)
