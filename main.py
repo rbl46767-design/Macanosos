@@ -111,7 +111,6 @@ async def actividad_crear(
             value="Vacío",
             inline=False
         )
-
         async def role_callback(
     inter,
     role_name=role_name,
@@ -131,22 +130,23 @@ async def actividad_crear(
         if inter.user.id in role_data["users"]:
             role_data["users"].remove(inter.user.id)
 
-            role_data = activity["roles"][role_name]
+    role_data = activity["roles"][role_name]
 
-            if len(role_data["users"]) >= role_data["limit"]:
-                await inter.response.send_message(
-                    "Ese rol está lleno.",
-                    ephemeral=True
-                )
-                return
+    if len(role_data["users"]) >= role_data["limit"]:
+        await inter.response.send_message(
+            "Ese rol está lleno.",
+            ephemeral=True
+        )
+        return
 
-            role_data["users"].append(inter.user.id)
+    role_data["users"].append(inter.user.id)
 
-            await view.update_message(inter)
+    await view.update_message(inter)
 
-            await inter.response.send_message(
-                f"Te uniste como {role_name}.",
-                ephemeral=True
+    await inter.response.send_message(
+        f"Te uniste como {role_name}.",
+        ephemeral=True
+    )
             )
 
         btn = discord.ui.Button(
