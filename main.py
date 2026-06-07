@@ -25,7 +25,7 @@ class ActivityView(discord.ui.View):
             title=f"📌 [{self.activity_id}] {activity['name']}",
             description=f"🆔 ID de Actividad: {self.activity_id}",
             color=discord.Color.gold()
-
+        )
         for role_name, data in activity["roles"].items():
             users = "\n".join(
                 f"<@{u}>" for u in data["users"]
