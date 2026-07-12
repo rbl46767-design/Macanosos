@@ -1,0 +1,61 @@
+{
+    "version": 1,
+    "data": {
+        "248eb118-e880-420e-8ac3-45a06b6b794c": {
+            "id": "248eb118-e880-420e-8ac3-45a06b6b794c",
+            "guild_id": 1515369137818435735,
+            "channel_id": 1515379884405559527,
+            "message_id": 0,
+            "leader_id": 929480181524090881,
+            "title": "grupales",
+            "description": "oe perros ya casi esta el nuevo bot :D",
+            "is_closed": false,
+            "roles": [],
+            "participants": [],
+            "created_at": "2026-07-03T17:00:37.115231",
+            "closed_at": null
+        },
+        "16ba39c9-1c9a-49a6-8402-ba512f6b53e8": {
+            "id": "16ba39c9-1c9a-49a6-8402-ba512f6b53e8",
+            "guild_id": 1515369137818435735,
+            "channel_id": 1515379884405559527,
+            "message_id": 0,
+            "leader_id": 929480181524090881,
+            "title": "grupales",
+            "description": "oe perros ya casi esta el nuevo bot :D",
+            "is_closed": false,
+            "roles": [],
+            "participants": [],
+            "created_at": "2026-07-03T17:00:54.731207",
+            "closed_at": null
+        },
+        "ed424799-ca28-43ee-a859-9831c56f28b8": {
+            "id": "ed424799-ca28-43ee-a859-9831c56f28b8",
+            "guild_id": 1515369137818435735,
+            "channel_id": 1515379884405559527,
+            "message_id": 0,
+            "leader_id": 929480181524090881,
+            "title": "grupales",
+            "description": "",
+            "is_closed": false,
+            "roles": [],
+            "participants": [],
+            "created_at": "2026-07-03T17:01:01.796393",
+            "closed_at": null
+        },
+        "638022a6-c560-4025-aa2c-361febfeb141": {
+            "id": "638022a6-c560-4025-aa2c-361febfeb141",
+            "guild_id": 1515369137818435735,
+            "channel_id": 1515379884405559527,
+            "message_id": 0,
+            "leader_id": 929480181524090881,
+            "title": "Ava roads t8",
+            "description": "",
+            "is_closed": false,
+            "roles": [],
+            "participants": [],
+            "created_at": "2026-07-03T17:01:16.440596",
+            "closed_at": null
+        }
+    }
+}
