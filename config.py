@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from dotenv import load_dotenv
 
@@ -14,6 +15,7 @@ class Config:
     bot_prefix: str
     version: str
     debug: bool
+    activity_timezone: str
 
 
 def _to_bool(value: str | None) -> bool:
@@ -24,7 +26,7 @@ def _to_bool(value: str | None) -> bool:
         "1",
         "true",
         "yes",
-        "on"
+        "on",
     )
 
 
@@ -36,11 +38,24 @@ def load_config() -> Config:
             "No se encontró BOT_TOKEN dentro del archivo .env"
         )
 
+    activity_timezone = os.getenv(
+        "ACTIVITY_TIMEZONE",
+        "America/Mexico_City",
+    ).strip()
+
+    try:
+        ZoneInfo(activity_timezone)
+    except ZoneInfoNotFoundError as error:
+        raise RuntimeError(
+            "ACTIVITY_TIMEZONE no contiene una zona horaria válida."
+        ) from error
+
     return Config(
         bot_token=token,
         bot_prefix=os.getenv("BOT_PREFIX", "!"),
         version="2.0.0",
-        debug=_to_bool(os.getenv("DEBUG"))
+        debug=_to_bool(os.getenv("DEBUG")),
+        activity_timezone=activity_timezone,
     )
 
 
